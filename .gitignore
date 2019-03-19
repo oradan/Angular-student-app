@@ -1,0 +1,4 @@
+# ignoring the test folder
+/folder-to-be-ignored
+# ignoring the test file
+file-to-be-ignored.docx
