@@ -2,3 +2,4 @@
 /folder-to-be-ignored
 # ignoring the test file
 file-to-be-ignored.docx
+/angular-student-app/node_modules
