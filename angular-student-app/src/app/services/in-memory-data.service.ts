@@ -60,6 +60,34 @@ export class InMemoryDataService implements InMemoryDbService {
 
 
     ]
-    return {students}
+
+    const teachers=[
+      {
+        id:111,
+        teacherName:"Marian teacher",
+        teacherCours:"Biology"
+      },
+      {
+        id:222,
+        teacherName:"Maria Voica",
+        teacherCours:"Math"
+      },
+      {
+        id:333,
+        teacherName:"Herieta Hans",
+        teacherCours:"Chemistry"
+      },
+      {
+        id:444,
+        teacherName:"Biserca Slovensky",
+        teacherCours:"History"
+      },
+      {
+        id:555,
+        teacherName:"Ana Manole",
+        teacherCours:"Literature"
+      }
+    ]
+    return {students,teachers}
   }
 }
