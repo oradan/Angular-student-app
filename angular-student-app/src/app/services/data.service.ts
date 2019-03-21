@@ -16,12 +16,13 @@ export class DataService {
   dataError.errorStaus=error.status
   dataError.message = error.statusText;
   dataError.friendlyMessage=" An error ocured while retrieving data. "
+  console.log(dataError)
   return throwError(dataError)
   }
   constructor(private http:HttpClient) { }
   
   getAllStudents():Observable<Student[]|TrackerError>{
-  let dataUrl = 'api/students'
+  let dataUrl = 'http://demo3848914.mockable.io/students'
   return this.http.get<Student[]>(dataUrl)
   .pipe(
     catchError(error=>this.httpErrorhandler(error))

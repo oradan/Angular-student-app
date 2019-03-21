@@ -32,18 +32,18 @@ export class DashboardComponent implements OnInit {
       
     }
 
-    this.dataService.addStudent(this.newStudent)
-    .subscribe(
-      (data:Student)=>console.log(data),
-      (err:TrackerError)=> console.log(err)
+    // this.dataService.addStudent(this.newStudent)
+    // .subscribe(
+    //   (data:Student)=>console.log(data),
+    //   (err:TrackerError)=> console.log(err)
      
-    )
-    this.dataService.updateStudent(this.updatedStudent)
-    .subscribe(
-      (data:void)=>console.log(`${this.updatedStudent.studentName} was successfully updated`),
-      (err:TrackerError)=> console.log(err.friendlyMessage),
-      ()=>console.log("uraaa")
-    )
+    // )
+    // this.dataService.updateStudent(this.updatedStudent)
+    // .subscribe(
+    //   (data:void)=>console.log(`${this.updatedStudent.studentName} was successfully updated`),
+    //   (err:TrackerError)=> console.log(err.friendlyMessage),
+    //   ()=>console.log("uraaa")
+    // )
     this.dataService.getAllStudents()
     .subscribe(
     (data :Student[])=>this.students= data,
@@ -55,38 +55,40 @@ export class DashboardComponent implements OnInit {
     ()=>console.log(this.students)
  
    )
- 
-    this.dataService.deleteStudent(1)
-    .subscribe(
-      (data:void)=>console.log("start delede"),
-      (err:TrackerError)=> console.log(err.friendlyMessage),
-      ()=>console.log("This item was successfully deleted")
-      
-    )
-    this.dataService.getAllStudents()
-    .subscribe(
-    (data :Student[])=>this.students= data,
-    (err:TrackerError)=> {
-      if(err.errorStaus===404){
-        console.log(err.friendlyMessage)
-      }else{console.log("unknown error")}
-    },
-    ()=>console.log(this.students)
- 
-   )
-  this.dataService.getStudent(8)
-  .subscribe(
-   (data :Student)=>this.student= data,
-   (err:TrackerError)=> console.log(err.friendlyMessage),
-   ()=>console.log(this.student)
+
+   this.dataService.getAllStudents()
+   .subscribe(
+   (data :Student[])=>this.students= data,
+   (err:TrackerError)=> {
+     if(err.errorStaus===404){
+       console.log(err.friendlyMessage)
+     }else{console.log("unknown error")}
+   },
+   ()=>console.log(this.students, "the second cache")
 
   )
-  this.dataService.getAllTeachers()
-  .subscribe(
-    (data:Teachers[])=>this.teachers=data,
-    (err:TrackerError)=> console.log(err.friendlyMessage),
-    ()=>console.log(this.teachers)
-  )
+ 
+    // this.dataService.deleteStudent(1)
+    // .subscribe(
+    //   (data:void)=>console.log("start delede"),
+    //   (err:TrackerError)=> console.log(err.friendlyMessage),
+    //   ()=>console.log("This item was successfully deleted")
+      
+    // )
+  
+  // this.dataService.getStudent(8)
+  // .subscribe(
+  //  (data :Student)=>this.student= data,
+  //  (err:TrackerError)=> console.log(err.friendlyMessage),
+  //  ()=>console.log(this.student)
+
+  // )
+  // this.dataService.getAllTeachers()
+  // .subscribe(
+  //   (data:Teachers[])=>this.teachers=data,
+  //   (err:TrackerError)=> console.log(err.friendlyMessage),
+  //   ()=>console.log(this.teachers)
+  // )
 
   }
   

@@ -14,8 +14,8 @@ export class LogResponseInterceptorService implements HttpInterceptor{
     .pipe(
       tap(
         event=>{
-          if(event.type=== HttpEventType.Response){console.log(event.body,"This is the body")}
-          console.log(event)
+         // if(event.type=== HttpEventType.Response){console.log(event.status,"This is the body")}
+         
         }
       )
     )
