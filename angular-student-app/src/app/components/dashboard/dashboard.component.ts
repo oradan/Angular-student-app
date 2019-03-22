@@ -46,7 +46,7 @@ export class DashboardComponent implements OnInit {
 
  gradesCourseMatcher(){
    this.students.forEach(data=>{
-     console.log(data,"for each")
+     
    })
  }
 
