@@ -17,12 +17,10 @@ export class CacheInterceptorService implements HttpInterceptor {
       return next.handle(req)
     }
    const cachedResponse: HttpResponse<any> = this.httpCache.get(req.url)
-   console.log(cachedResponse, "response from cache")
-   console.log(req.url, "request url")
+
 
     if(cachedResponse){
-      console.log(`Returning a cached respons ${cachedResponse.url}`)
-      console.log(cachedResponse, "response from cache")
+      console.log("Returning a cached respons")
       return of(cachedResponse)
     }
 

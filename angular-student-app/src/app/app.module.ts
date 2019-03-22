@@ -3,12 +3,14 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-//import { InMemoryDataService } from './services/in-memory-data.service';
+import { InMemoryDataService } from './services/in-memory-data.service';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import {HTTP_INTERCEPTORS} from '@angular/common/http'
 import { AaddHeaderInterceptorsService} from './services/aadd-header-interceptors.service'
 import { LogResponseInterceptorService } from './services/log-response-interceptor.service';
 import { CacheInterceptorService } from './services/cache-interceptor.service';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
 
 @NgModule({
   declarations: [
@@ -18,9 +20,10 @@ import { CacheInterceptorService } from './services/cache-interceptor.service';
   imports: [
     BrowserModule,
     HttpClientModule,
-    // HttpClientInMemoryWebApiModule.forRoot(
-    //   InMemoryDataService,{dataEncapsulation:false}
-    // )
+    HttpClientInMemoryWebApiModule.forRoot(
+      InMemoryDataService,{dataEncapsulation:false}
+    ),
+    NgbModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AaddHeaderInterceptorsService,multi:true},

@@ -1,3 +1,41 @@
-<p>
-  dashboard works!
-</p>
+<h2>Students dashboard</h2>
+<table class="table my-5">
+    <thead>
+    <tr>
+      <th scope="col">Nr crt</th>
+      <th scope="col">Student Name</th>
+      <th scope="col" *ngFor="let course of studentsCourses">{{course.courseName}}</th>
+      <th scope="col">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let student of students; index as i" colspan="9">
+      <td>{{ i + 1 }}</td>
+      <td>{{student.studentName}}</td>
+      <td *ngFor="let item of student.studentCourses" >{{item.courseGrade}}</td>
+      <td><button type="button" class="btn btn-secondary mx-1">Edit</button><button type="button" class="btn btn-secondary mx-1">Delete</button></td>
+      
+    </tr>
+    </tbody>
+  </table>
+
+  <h2>Teachers Dashboard</h2>
+  <table class="table my-5">
+        <thead>
+        <tr>
+          <th scope="col">Nr crt</th>
+          <th scope="col">Teacher Name</th>
+          <th scope="col">Course</th>
+          <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let teacher of teachers; index as i">
+          <th scope="row">{{ i + 1 }}</th>
+          <td>{{ teacher.teacherName }}</td>
+          <td>{{teacher.teacherCours}}</td>
+          <td><button type="button" class="btn btn-secondary mx-1">Edit</button><button type="button" class="btn btn-secondary mx-1">Delete</button></td>
+          
+        </tr>
+        </tbody>
+      </table>

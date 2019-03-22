@@ -3,6 +3,7 @@ import { DataService } from '../../services/data.service';
 import { Student } from '../../models/students';
 import { Teachers } from '../../models/teachers';
 import { TrackerError } from '../../models/student-tracker-error';
+import { Courses } from '../../models/courses';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,24 +12,58 @@ import { TrackerError } from '../../models/student-tracker-error';
 })
 export class DashboardComponent implements OnInit {
   private students: Student[];
+  private studentsCourses:Courses[];
   private student: Student;
   private newStudent:Student;
   private updatedStudent:Student;
   private teachers:Teachers[]
   constructor(private dataService:DataService) { }
 
+
+  logStudents(){
+    this.dataService.getAllStudents()
+    .subscribe(
+    (data :Student[])=>this.students= data,
+    (err:TrackerError)=> {
+      if(err.errorStaus===404){
+        console.log(err.friendlyMessage)
+      }else{console.log("unknown error")}
+    },
+    ()=>console.log(this.students, "The students are loged")
+ 
+   )
+
+  }
+
+  logTeatchers(){
+    this.dataService.getAllTeachers()
+    .subscribe(
+      (data:Teachers[])=>this.teachers=data,
+      (err:TrackerError)=> console.log(err.friendlyMessage),
+      ()=>console.log(this.teachers)
+    )
+  }
+
+ gradesCourseMatcher(){
+   this.students.forEach(data=>{
+     console.log(data,"for each")
+   })
+ }
+
+
   ngOnInit() {
+   
    this.newStudent={
       id:11,
       studentName:"Maria Test",
-      studentCourses:[{courseId:11,courseName:"Math",courseGrade:7},{courseId:12,courseName:"Biology",courseGrade:10},{courseId:13,courseName:"Chemistry",courseGrade:8},{courseId:14,courseName:"History",courseGrade:10},{courseId:15,courseName:"Literature",courseGrade:8}]
+      studentCourses:[{courseId:11,courseGrade:7},{courseId:12,courseGrade:10},{courseId:13,courseGrade:8},{courseId:14,courseGrade:10},{courseId:15,courseGrade:8}]
       
     }
 
     this.updatedStudent={
       id:11,
       studentName:"Maria test updated",
-      studentCourses:[{courseId:11,courseName:"Math",courseGrade:7},{courseId:12,courseName:"Biology",courseGrade:10},{courseId:13,courseName:"Chemistry",courseGrade:8},{courseId:14,courseName:"History",courseGrade:10},{courseId:15,courseName:"Literature",courseGrade:8}]
+      studentCourses:[{courseId:11,courseGrade:7},{courseId:12,courseGrade:10},{courseId:13,courseGrade:8},{courseId:14,courseGrade:10},{courseId:15,courseGrade:8}]
       
     }
 
@@ -46,7 +81,9 @@ export class DashboardComponent implements OnInit {
     // )
     this.dataService.getAllStudents()
     .subscribe(
-    (data :Student[])=>this.students= data,
+    (data :Student[])=>{
+      this.students= data
+    },
     (err:TrackerError)=> {
       if(err.errorStaus===404){
         console.log(err.friendlyMessage)
@@ -56,17 +93,12 @@ export class DashboardComponent implements OnInit {
  
    )
 
-   this.dataService.getAllStudents()
+   this.dataService.getAllCourses()
    .subscribe(
-   (data :Student[])=>this.students= data,
-   (err:TrackerError)=> {
-     if(err.errorStaus===404){
-       console.log(err.friendlyMessage)
-     }else{console.log("unknown error")}
-   },
-   ()=>console.log(this.students, "the second cache")
-
-  )
+     (data:Courses[])=> this.studentsCourses=data,
+     (err:TrackerError)=> console.log(err.friendlyMessage),
+   ()=> console.log(this.studentsCourses,"cources")
+   )
  
     // this.dataService.deleteStudent(1)
     // .subscribe(
@@ -83,13 +115,13 @@ export class DashboardComponent implements OnInit {
   //  ()=>console.log(this.student)
 
   // )
-  // this.dataService.getAllTeachers()
-  // .subscribe(
-  //   (data:Teachers[])=>this.teachers=data,
-  //   (err:TrackerError)=> console.log(err.friendlyMessage),
-  //   ()=>console.log(this.teachers)
-  // )
-
+  this.dataService.getAllTeachers()
+  .subscribe(
+    (data:Teachers[])=>this.teachers=data,
+    (err:TrackerError)=> console.log(err.friendlyMessage),
+    ()=>console.log(this.teachers)
+  )
+ 
   }
   
 

@@ -5,6 +5,7 @@ import {map, tap, catchError} from 'rxjs/operators';
 import { Student } from '../models/students';
 import { Teachers } from '../models/teachers';
 import { TrackerError } from '../models/student-tracker-error';
+import { Courses } from '../models/courses';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class DataService {
   constructor(private http:HttpClient) { }
   
   getAllStudents():Observable<Student[]|TrackerError>{
-  let dataUrl = 'http://demo3848914.mockable.io/students'
+  let dataUrl = 'api/students'
   return this.http.get<Student[]>(dataUrl)
   .pipe(
     catchError(error=>this.httpErrorhandler(error))
@@ -37,7 +38,13 @@ export class DataService {
     )
   }
 
-
+getAllCourses(){
+  let dataUrl = 'api/courses'
+  return this.http.get<Courses[]|TrackerError>(dataUrl)
+  .pipe(
+    catchError(error=>this.httpErrorhandler(error))
+  )
+}
   getStudent(studentID:number):Observable<Student|TrackerError>{
     let dataUrl = `api/students/${studentID}`
     return this.http.get<Student>(dataUrl)

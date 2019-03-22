@@ -10,11 +10,13 @@ export class HttpCacheService {
 
   put(url:string,response:HttpResponse<any>):void{
     this.requests[url]=response;
+    console.log(this.requests,"PUT method from cache")
   }
 
   get(url:string):HttpResponse<any>|undefined{
-    console.log(this.requests[url],"response from cache")
+    console.log(this.requests,"Get from cache")
     return this.requests[url];
+
     
   }
 
