@@ -1,4 +1,5 @@
 <h2>Students dashboard</h2>
+<button type="button" class="btn btn-secondary mx-1"(click)="gradesCourseMatcher()">Test function</button>
 <table class="table my-5">
     <thead>
     <tr>
@@ -8,13 +9,14 @@
       <th scope="col">Actions</th>
     </tr>
     </thead>
-    <tbody>
-    <tr *ngFor="let student of students; index as i" colspan="9">
+    <tbody *ngIf="studentsCourses">
+    <tr *ngFor="let student of students; index as i">
       <td>{{ i + 1 }}</td>
       <td>{{student.studentName}}</td>
-      <td *ngFor="let item of student.studentCourses" >{{item.courseGrade}}</td>
-      <td><button type="button" class="btn btn-secondary mx-1">Edit</button><button type="button" class="btn btn-secondary mx-1">Delete</button></td>
-      
+        <td  *ngFor="let item of student.studentCourses">{{item.courseGrade}}</td>
+        <td><button type="button" class="btn btn-secondary mx-1">Edit</button><button type="button" class="btn btn-secondary mx-1">Delete</button></td>
+      <!-- item.courseId,item.courseGrade -->
+      <!-- gradesCourseMatcher(item.courseId,item.courseGrade) -->
     </tr>
     </tbody>
   </table>

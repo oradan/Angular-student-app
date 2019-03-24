@@ -4,6 +4,8 @@ import { Student } from '../../models/students';
 import { Teachers } from '../../models/teachers';
 import { TrackerError } from '../../models/student-tracker-error';
 import { Courses } from '../../models/courses';
+import { from, concat } from 'rxjs';
+import { filter, mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,7 +18,7 @@ export class DashboardComponent implements OnInit {
   private student: Student;
   private newStudent:Student;
   private updatedStudent:Student;
-  private teachers:Teachers[]
+  private teachers:Teachers[];
   constructor(private dataService:DataService) { }
 
 
@@ -44,15 +46,20 @@ export class DashboardComponent implements OnInit {
     )
   }
 
- gradesCourseMatcher(){
-   this.students.forEach(data=>{
+gradesCourseMatcher(){
+      let students$ =from(this.students);
+      let cources$=from(this.studentsCourses)
+      let student
+      // concat(students$,cources$)
+      // .subscribe(data=>console.log(data))
+
+      students$.subscribe(value=>(console.log(value.studentCourses)))
      
-   })
- }
+}
 
 
   ngOnInit() {
-   
+  
    this.newStudent={
       id:11,
       studentName:"Maria Test",
