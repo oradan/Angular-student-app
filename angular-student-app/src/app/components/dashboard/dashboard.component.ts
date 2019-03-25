@@ -5,7 +5,9 @@ import { Teachers } from '../../models/teachers';
 import { TrackerError } from '../../models/student-tracker-error';
 import { Courses } from '../../models/courses';
 import { from, concat } from 'rxjs';
-import { filter, mergeMap } from 'rxjs/operators';
+import { filter, mergeMap, map } from 'rxjs/operators';
+import { Course } from '../../models/course';
+import { ValueTransformer } from '../../../../node_modules/@angular/compiler/src/util';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,11 +17,15 @@ import { filter, mergeMap } from 'rxjs/operators';
 export class DashboardComponent implements OnInit {
   private students: Student[];
   private studentsCourses:Courses[];
+  private currentstudentsSortedgrades=[]
+  private studentsSortedgrades=[]
+  private currentCourse={}
   private student: Student;
   private newStudent:Student;
   private updatedStudent:Student;
   private teachers:Teachers[];
   constructor(private dataService:DataService) { }
+  
 
 
   logStudents(){
@@ -46,17 +52,78 @@ export class DashboardComponent implements OnInit {
     )
   }
 
-gradesCourseMatcher(){
-      let students$ =from(this.students);
-      let cources$=from(this.studentsCourses)
-      let student
-      // concat(students$,cources$)
-      // .subscribe(data=>console.log(data))
+  // gradesCourseMatcher(){
+  //     let students$ =from(this.students);
+  //     let cources$=from(this.studentsCourses)
+  //     // concat(students$,cources$)
+  //     // .subscribe(data=>console.log(data))
 
-      students$.subscribe(value=>(console.log(value.studentCourses)))
+  //     students$.subscribe(student=>{
+  //       let currentStudentgrades=[]
+   
+  //       console.log(student.id)
+  //       let studentcourses$=from(student.studentCourses)
+  //           cources$.subscribe(courseId=>{
+  //            // console.log(courseId)
+  //             studentcourses$.subscribe(currentstudentcources=>{
+  //              if(courseId.id===currentstudentcources.courseId){
+                
+  //                 this.currentCourse["courseId"]=currentstudentcources.courseId;
+  //                 this.currentCourse["courseGrade"]=currentstudentcources.courseGrade;
+  //                 console.log(this.currentCourse)
+  //                 this.studentsSortedgrades.push(this.currentCourse)
+  //                 return
+  //               // console.log( `CourceId ${courseId.id} currentstudent courceId ${currentstudentcources.courseId} grade ${currentstudentcources.courseGrade}`)
+                
+                  
+  //              }
+          
+  //             })
+
+             
+  //           })
+           
+  //     })
+  // console.log(this.studentsSortedgrades)
+  // }  
+
+
+  // gradesCourseMatcher(){
+  //   this.currentstudentsSortedgrades=[]
+  //   this.students.forEach(currentStudent=>{
+      
+  //     console.log(currentStudent.id,"current student Id")
+  //     this.studentsCourses.forEach(currentCourse=>{
+  //       let currentcourseId=currentCourse.id;
+  //       console.log(currentcourseId, "current course Id")
+  //       currentStudent.studentCourses.forEach(currentStudentCourse=>{
+  //        // console.log(currentStudentCourse, "current student course")
+  //         if(currentcourseId===currentStudentCourse.courseId){
+  //           this.currentCourse["courseId"]=currentStudentCourse.courseId;
+  //           this.currentCourse["courseGrade"]=currentStudentCourse.courseGrade;
+  //           console.log(this.currentCourse)
+  //           return 
+  //           //this.currentstudentsSortedgrades.push(this.currentCourse)
+  //        //   console.log(this.currentstudentsSortedgrades)
+  //         }
+  //       })
+  //     })
+
+  //   //  this.studentsSortedgrades.push( this.currentstudentsSortedgrades)
+  //    // console.log(this.studentsSortedgrades)
+  //   })
+  // }
+  gradesCourseMatcher(){
+    let students$ =from(this.students);
+
+    students$.subscribe(
+      values=>values.studentCourses.sort((a:any,b:any)=>a.courseGrade-b.courseGrade)
      
-}
-
+    )
+    
+    // this.students.sort((a:any,b:any)=>a.studentName-b.studentName)
+    // console.log(this.students)
+  }
 
   ngOnInit() {
   
@@ -87,9 +154,19 @@ gradesCourseMatcher(){
     //   ()=>console.log("uraaa")
     // )
     this.dataService.getAllStudents()
-    .subscribe(
-    (data :Student[])=>{
-      this.students= data
+     .subscribe(
+     (data :Student[])=>{
+       this.students= data;
+       this.students.forEach(values=>
+      {
+        values.studentCourses.sort((a:any,b:any)=>a.courseGrade-b.courseGrade)
+      })
+      //  let students$=from(this.students)
+      //  students$.subscribe(
+      //   values=>values.studentCourses.sort((a:any,b:any)=>a.courseGrade-b.courseGrade)
+       
+      // )
+      console.log(this.students)
     },
     (err:TrackerError)=> {
       if(err.errorStaus===404){
