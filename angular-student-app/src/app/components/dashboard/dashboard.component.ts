@@ -156,7 +156,7 @@ export class DashboardComponent implements OnInit {
         console.log(err.friendlyMessage)
       }else{console.log("unknown error")}
     },
-    ()=>console.log(this.students)
+    ()=>console.log(this.students,"this students")
  
    )
 
