@@ -1,22 +1,20 @@
 <h2>Students dashboard</h2>
-<button type="button" class="btn btn-secondary mx-1"(click)="gradesCourseMatcher()">Test function</button>
+<button type="button" class="btn btn-secondary mx-1">Test function</button>
 <table class="table my-5">
     <thead>
     <tr>
       <th scope="col">Nr crt</th>
       <th scope="col">Student Name</th>
-      <th scope="col" *ngFor="let course of studentsCourses">{{course.courseName}}</th>
+      <th scope="col" *ngFor="let course of studentsCourses">{{course.courseName}} C-Id:{{course.id}}</th>
       <th scope="col">Actions</th>
     </tr>
     </thead>
-    <tbody *ngIf="studentsCourses">
+    <tbody>
     <tr *ngFor="let student of students; index as i">
       <td>{{ i + 1 }}</td>
       <td>{{student.studentName}}</td>
-        <td  *ngFor="let item of student.studentCourses">{{item.courseGrade}}</td>
+        <td  *ngFor="let item of student.studentCourses">{{item.courseGrade}} C-Id:{{item.courseId}}</td>
         <td><button type="button" class="btn btn-secondary mx-1">Edit</button><button type="button" class="btn btn-secondary mx-1">Delete</button></td>
-      <!-- item.courseId,item.courseGrade -->
-      <!-- gradesCourseMatcher(item.courseId,item.courseGrade) -->
     </tr>
     </tbody>
   </table>

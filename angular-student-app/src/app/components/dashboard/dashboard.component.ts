@@ -8,6 +8,7 @@ import { from, concat } from 'rxjs';
 import { filter, mergeMap, map } from 'rxjs/operators';
 import { Course } from '../../models/course';
 import { ValueTransformer } from '../../../../node_modules/@angular/compiler/src/util';
+import { analyzeAndValidateNgModules } from '@angular/compiler';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,17 +18,13 @@ import { ValueTransformer } from '../../../../node_modules/@angular/compiler/src
 export class DashboardComponent implements OnInit {
   private students: Student[];
   private studentsCourses:Courses[];
-  private currentstudentsSortedgrades=[]
-  private studentsSortedgrades=[]
-  private currentCourse={}
   private student: Student;
   private newStudent:Student;
   private updatedStudent:Student;
   private teachers:Teachers[];
+
+
   constructor(private dataService:DataService) { }
-  
-
-
   logStudents(){
     this.dataService.getAllStudents()
     .subscribe(
@@ -113,17 +110,7 @@ export class DashboardComponent implements OnInit {
   //    // console.log(this.studentsSortedgrades)
   //   })
   // }
-  gradesCourseMatcher(){
-    let students$ =from(this.students);
 
-    students$.subscribe(
-      values=>values.studentCourses.sort((a:any,b:any)=>a.courseGrade-b.courseGrade)
-     
-    )
-    
-    // this.students.sort((a:any,b:any)=>a.studentName-b.studentName)
-    // console.log(this.students)
-  }
 
   ngOnInit() {
   
@@ -156,17 +143,13 @@ export class DashboardComponent implements OnInit {
     this.dataService.getAllStudents()
      .subscribe(
      (data :Student[])=>{
-       this.students= data;
-       this.students.forEach(values=>
-      {
-        values.studentCourses.sort((a:any,b:any)=>a.courseGrade-b.courseGrade)
-      })
-      //  let students$=from(this.students)
-      //  students$.subscribe(
-      //   values=>values.studentCourses.sort((a:any,b:any)=>a.courseGrade-b.courseGrade)
        
-      // )
-      console.log(this.students)
+       data.map(values=>
+      {
+        values.studentCourses.sort((a:any,b:any)=>a.courseId-b.courseId)
+      })
+
+      this.students= data;
     },
     (err:TrackerError)=> {
       if(err.errorStaus===404){
@@ -179,7 +162,10 @@ export class DashboardComponent implements OnInit {
 
    this.dataService.getAllCourses()
    .subscribe(
-     (data:Courses[])=> this.studentsCourses=data,
+     (data:Courses[])=> {
+      data.sort((a:any,b:any)=>a.id-b.id)
+      this.studentsCourses=data
+     },
      (err:TrackerError)=> console.log(err.friendlyMessage),
    ()=> console.log(this.studentsCourses,"cources")
    )
