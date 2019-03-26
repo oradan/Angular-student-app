@@ -9,6 +9,7 @@ import { filter, mergeMap, map } from 'rxjs/operators';
 import { Course } from '../../models/course';
 import { ValueTransformer } from '../../../../node_modules/@angular/compiler/src/util';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,36 +18,36 @@ import { analyzeAndValidateNgModules } from '@angular/compiler';
 })
 export class DashboardComponent implements OnInit {
   private students: Student[];
-  private studentsCourses:Courses[];
+  private studentsCourses: Courses[];
   private student: Student;
-  private newStudent:Student;
-  private updatedStudent:Student;
-  private teachers:Teachers[];
+  private newStudent: Student;
+  private updatedStudent: Student;
+  private teachers: Teachers[];
 
 
-  constructor(private dataService:DataService) { }
-  logStudents(){
+  constructor(private dataService: DataService) { }
+  logStudents() {
     this.dataService.getAllStudents()
-    .subscribe(
-    (data :Student[])=>this.students= data,
-    (err:TrackerError)=> {
-      if(err.errorStaus===404){
-        console.log(err.friendlyMessage)
-      }else{console.log("unknown error")}
-    },
-    ()=>console.log(this.students, "The students are loged")
- 
-   )
+      .subscribe(
+        (data: Student[]) => this.students = data,
+        (err: TrackerError) => {
+          if (err.errorStaus === 404) {
+            console.log(err.friendlyMessage)
+          } else { console.log("unknown error") }
+        },
+        () => console.log(this.students, "The students are loged")
+
+      )
 
   }
 
-  logTeatchers(){
+  logTeatchers() {
     this.dataService.getAllTeachers()
-    .subscribe(
-      (data:Teachers[])=>this.teachers=data,
-      (err:TrackerError)=> console.log(err.friendlyMessage),
-      ()=>console.log(this.teachers)
-    )
+      .subscribe(
+        (data: Teachers[]) => this.teachers = data,
+        (err: TrackerError) => console.log(err.friendlyMessage),
+        () => console.log(this.teachers)
+      )
   }
 
   // gradesCourseMatcher(){
@@ -57,29 +58,29 @@ export class DashboardComponent implements OnInit {
 
   //     students$.subscribe(student=>{
   //       let currentStudentgrades=[]
-   
+
   //       console.log(student.id)
   //       let studentcourses$=from(student.studentCourses)
   //           cources$.subscribe(courseId=>{
   //            // console.log(courseId)
   //             studentcourses$.subscribe(currentstudentcources=>{
   //              if(courseId.id===currentstudentcources.courseId){
-                
+
   //                 this.currentCourse["courseId"]=currentstudentcources.courseId;
   //                 this.currentCourse["courseGrade"]=currentstudentcources.courseGrade;
   //                 console.log(this.currentCourse)
   //                 this.studentsSortedgrades.push(this.currentCourse)
   //                 return
   //               // console.log( `CourceId ${courseId.id} currentstudent courceId ${currentstudentcources.courseId} grade ${currentstudentcources.courseGrade}`)
-                
-                  
+
+
   //              }
-          
+
   //             })
 
-             
+
   //           })
-           
+
   //     })
   // console.log(this.studentsSortedgrades)
   // }  
@@ -88,7 +89,7 @@ export class DashboardComponent implements OnInit {
   // gradesCourseMatcher(){
   //   this.currentstudentsSortedgrades=[]
   //   this.students.forEach(currentStudent=>{
-      
+
   //     console.log(currentStudent.id,"current student Id")
   //     this.studentsCourses.forEach(currentCourse=>{
   //       let currentcourseId=currentCourse.id;
@@ -113,26 +114,26 @@ export class DashboardComponent implements OnInit {
 
 
   ngOnInit() {
-  
-   this.newStudent={
-      id:11,
-      studentName:"Maria Test",
-      studentCourses:[{courseId:11,courseGrade:7},{courseId:12,courseGrade:10},{courseId:13,courseGrade:8},{courseId:14,courseGrade:10},{courseId:15,courseGrade:8}]
-      
+
+    this.newStudent = {
+      id: 11,
+      studentName: "Maria Test",
+      studentCourses: [{ courseId: 11, courseGrade: 7 }, { courseId: 12, courseGrade: 10 }, { courseId: 13, courseGrade: 8 }, { courseId: 14, courseGrade: 10 }, { courseId: 15, courseGrade: 8 }]
+
     }
 
-    this.updatedStudent={
-      id:11,
-      studentName:"Maria test updated",
-      studentCourses:[{courseId:11,courseGrade:7},{courseId:12,courseGrade:10},{courseId:13,courseGrade:8},{courseId:14,courseGrade:10},{courseId:15,courseGrade:8}]
-      
+    this.updatedStudent = {
+      id: 11,
+      studentName: "Maria test updated",
+      studentCourses: [{ courseId: 11, courseGrade: 7 }, { courseId: 12, courseGrade: 10 }, { courseId: 13, courseGrade: 8 }, { courseId: 14, courseGrade: 10 }, { courseId: 15, courseGrade: 8 }]
+
     }
 
     // this.dataService.addStudent(this.newStudent)
     // .subscribe(
     //   (data:Student)=>console.log(data),
     //   (err:TrackerError)=> console.log(err)
-     
+
     // )
     // this.dataService.updateStudent(this.updatedStudent)
     // .subscribe(
@@ -140,61 +141,93 @@ export class DashboardComponent implements OnInit {
     //   (err:TrackerError)=> console.log(err.friendlyMessage),
     //   ()=>console.log("uraaa")
     // )
-    this.dataService.getAllStudents()
-     .subscribe(
-     (data :Student[])=>{
-       
-       data.map(values=>
-      {
-        values.studentCourses.sort((a:any,b:any)=>a.courseId-b.courseId)
-      })
 
-      this.students= data;
-    },
-    (err:TrackerError)=> {
-      if(err.errorStaus===404){
-        console.log(err.friendlyMessage)
-      }else{console.log("unknown error")}
-    },
-    ()=>console.log(this.students,"this students")
- 
-   )
 
-   this.dataService.getAllCourses()
-   .subscribe(
-     (data:Courses[])=> {
-      data.sort((a:any,b:any)=>a.id-b.id)
-      this.studentsCourses=data
-     },
-     (err:TrackerError)=> console.log(err.friendlyMessage),
-   ()=> console.log(this.studentsCourses,"cources")
-   )
- 
+    forkJoin(
+      this.dataService.getAllStudents(),
+      this.dataService.getAllCourses()
+    ).subscribe(
+      
+      ([res1, res2]) => {
+
+      this.students = res1 as Student[];
+      this.studentsCourses = res2 as Courses[];
+      this.studentsCourses.forEach(course => {
+        this.students.forEach(student => {
+          if(!student.studentCourses.find(z=>z.courseId == course.id)){
+            var newCourse = new Course();
+            newCourse.courseId = course.id;
+            newCourse.courseGrade = null;
+            student.studentCourses.push(newCourse); 
+          }
+        });
+      });
+      
+      this.students.map(values => {
+        values.studentCourses.sort((a: any, b: any) => a.courseId - b.courseId)
+      });
+
+      this.studentsCourses.sort((a: any, b: any) => a.id - b.id);
+    },
+    (err:TrackerError)=> console.log(err.friendlyMessage)
+  )
+
+    // this.dataService.getAllStudents()
+    //   .subscribe(
+    //     (data: Student[]) => {
+
+    //       data.map(values => {
+    //         values.studentCourses.sort((a: any, b: any) => a.courseId - b.courseId)
+    //       })
+
+
+    //       this.students = data;
+    //       return
+    //     },
+    //     (err: TrackerError) => {
+    //       if (err.errorStaus === 404) {
+    //         console.log(err.friendlyMessage)
+    //       } else { console.log("unknown error") }
+    //     },
+    //     () => console.log(this.students, "this students")
+
+    //   )
+
+    // this.dataService.getAllCourses()
+    //   .subscribe(
+    //     (data: Courses[]) => {
+    //       data.sort((a: any, b: any) => a.id - b.id)
+    //       this.studentsCourses = data
+    //     },
+    //     (err: TrackerError) => console.log(err.friendlyMessage),
+    //     () => console.log(this.studentsCourses, "cources")
+    //   )
+
     // this.dataService.deleteStudent(1)
     // .subscribe(
     //   (data:void)=>console.log("start delede"),
     //   (err:TrackerError)=> console.log(err.friendlyMessage),
     //   ()=>console.log("This item was successfully deleted")
-      
+
     // )
-  
-  // this.dataService.getStudent(8)
-  // .subscribe(
-  //  (data :Student)=>this.student= data,
-  //  (err:TrackerError)=> console.log(err.friendlyMessage),
-  //  ()=>console.log(this.student)
 
-  // )
-  this.dataService.getAllTeachers()
-  .subscribe(
-    (data:Teachers[])=>this.teachers=data,
-    (err:TrackerError)=> console.log(err.friendlyMessage),
-    ()=>console.log(this.teachers)
-  )
- 
+    // this.dataService.getStudent(8)
+    // .subscribe(
+    //  (data :Student)=>this.student= data,
+    //  (err:TrackerError)=> console.log(err.friendlyMessage),
+    //  ()=>console.log(this.student)
+
+    // )
+    this.dataService.getAllTeachers()
+      .subscribe(
+        (data: Teachers[]) => this.teachers = data,
+        (err: TrackerError) => console.log(err.friendlyMessage),
+        () => console.log(this.teachers)
+      )
+
   }
-  
 
-  
+
+
 
 }

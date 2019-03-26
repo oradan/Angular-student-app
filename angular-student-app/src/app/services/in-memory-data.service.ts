@@ -15,7 +15,7 @@ export class InMemoryDataService implements InMemoryDbService {
       {
         id:1,
         studentName:"Olga Radan",
-        studentCourses:[{courseId:12,courseGrade:10},{courseId:14,courseGrade:10},{courseId:13,courseGrade:8},{courseId:11,courseGrade:7},{courseId:15,courseGrade:8}]
+        studentCourses:[{courseId:14,courseGrade:10},{courseId:13,courseGrade:8},{courseId:15,courseGrade:8}]
         },
         {
         id:2,

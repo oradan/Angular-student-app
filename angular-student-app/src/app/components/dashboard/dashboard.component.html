@@ -13,7 +13,7 @@
     <tr *ngFor="let student of students; index as i">
       <td>{{ i + 1 }}</td>
       <td>{{student.studentName}}</td>
-        <td  *ngFor="let item of student.studentCourses">{{item.courseGrade}} C-Id:{{item.courseId}}</td>
+        <td  *ngFor="let item of student.studentCourses">{{item.courseGrade ? item.courseGrade : "absent" }} C-Id:{{item.courseId}}</td>
         <td><button type="button" class="btn btn-secondary mx-1">Edit</button><button type="button" class="btn btn-secondary mx-1">Delete</button></td>
     </tr>
     </tbody>
