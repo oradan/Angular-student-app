@@ -150,9 +150,9 @@ export class DashboardComponent implements OnInit {
       
       ([res1, res2]) => {
 
-      this.students = res1 as Student[];
-      this.studentsCourses = res2 as Courses[];
-      this.studentsCourses.forEach(course => {
+        this.students = <Student[]>res1 ;  //assertion or casting in othe programming languages
+        this.studentsCourses = res2 as Courses[]; //that is another way to do the assertion
+        this.studentsCourses.forEach(course => {
         this.students.forEach(student => {
           if(!student.studentCourses.find(z=>z.courseId == course.id)){
             var newCourse = new Course();
